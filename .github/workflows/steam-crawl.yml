@@ -32,7 +32,7 @@ jobs:
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_NAME: ${{ secrets.DB_NAME }}
-        run: python your_script_name.py  # 替换为你的爬虫脚本文件名（如main.py）
+        run: python steam_crawler.py  # 替换为你的爬虫脚本文件名（如main.py）
 
       # （可选）上传日志/进度文件到Artifacts（若需备份）
       - name: 上传进度文件
