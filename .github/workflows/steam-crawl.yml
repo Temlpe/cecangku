@@ -2,33 +2,35 @@ name: Steam爬虫定时任务
 
 on:
   schedule:
+    # 每天UTC时间0点运行（对应北京时间8点）
     - cron: '0 0 * * *'
-  workflow_dispatch:
+  workflow_dispatch:  # 允许手动触发
 
 jobs:
   crawl:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # 运行环境为Ubuntu
     environment: env  # 替换为你的Environment名称（如production）
     steps:
       - name: 拉取代码
-        run: git clone https://github.com/${{ github.repository }}.git . && cd $(basename ${{ github.repository }})
+        uses: actions/checkout@v4
 
-      - name: 查看文件列表
-        run: ls -la
+      - name: 设置Python环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'  # 匹配你的Python版本
 
-      - name: 安装Python和依赖
+      - name: 安装依赖
         run: |
-          sudo apt update
-          sudo apt install -y python3.10 python3.10-pip
-          python3.10 -m pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: 运行爬虫脚本
         env:
-          # 直接引用Environment中的Secrets（名称需完全匹配）
+          # 注入Secrets为环境变量
           STEAM_API_KEY: ${{ secrets.STEAM_API_KEY }}
           DB_HOST: ${{ secrets.DB_HOST }}
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_NAME: ${{ secrets.DB_NAME }}
-        run: python3.10 steam_crawler.py  # 替换为你的脚本名
+        run: python steam_crawler.py  # 替换为你的爬虫脚本文件名（如main.py）
+
