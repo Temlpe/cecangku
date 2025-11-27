@@ -213,6 +213,7 @@ def batch_save_apps_to_db(apps_list, retry=3):
         )
         values_list.append(values)
 
+    saved_count = 0
     # 重试逻辑
     for attempt in range(retry):
         try:
@@ -220,15 +221,16 @@ def batch_save_apps_to_db(apps_list, retry=3):
             conn.commit()
             saved_count = cursor.rowcount
             print(f"批量保存成功：{saved_count}条数据（{len(apps_list)}个应用）")
-            return saved_count
+            break
         except Exception as e:
             print(f"批量保存失败（尝试{attempt+1}/{retry}）：{e}")
             conn.rollback()
             if attempt < retry - 1:
                 time.sleep(2)  # 重试间隔
-    return 0
-    finally:
-        cursor.close()
+    
+    # 确保关闭游标
+    cursor.close()
+    return saved_count
 
 # -------------------------- Steam API --------------------------
 def create_session_with_retry():
