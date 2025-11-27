@@ -167,7 +167,7 @@ def get_app_list(last_app_id=0):
     if not STEAM_API_KEY:
         print("STEAM_API_KEY 未配置！")
         return None
-    url = f"https://api.steampowered.com/IStoreService/GetAppList/v1/ "
+    url = f"https://api.steampowered.com/IStoreService/GetAppList/v1/"
     params = {
         'key': STEAM_API_KEY,
         'include_games': True,
