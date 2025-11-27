@@ -1,5 +1,3 @@
-数据库连接失败：2013 (HY000): Lost connection to MySQL server at 'reading authorization packet', system error: 71
-我的程序在进行爬取的时候中途出现上方的报错，帮我解决一下并给出完整代码，下方是我的爬虫代码
 import os
 import time
 import json
