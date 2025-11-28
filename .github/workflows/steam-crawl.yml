@@ -2,9 +2,13 @@ name: Steam爬虫定时任务
 
 on:
   schedule:
-    # 每天UTC时间0点运行（对应北京时间8点）
-    - cron: '0 */1 * * *'  # 每小时0分触发（UTC）
+    - cron: '0 */2 * * *'  
   workflow_dispatch:  # 允许手动触发
+
+# 关键：控制并发执行
+concurrency:
+  group: steam-crawler-group  # 自定义固定组名（确保唯一）
+  cancel-in-progress: false    # 若有正在运行的任务，取消旧任务并启动新任务（或设为false让新任务排队）
 
 jobs:
   crawl:
@@ -33,4 +37,3 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_NAME: ${{ secrets.DB_NAME }}
         run: python steam_crawler.py  # 替换为你的爬虫脚本文件名（如main.py）
-
