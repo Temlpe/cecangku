@@ -2,7 +2,7 @@ name: Steam爬虫定时任务
 
 on:
   schedule:
-    - cron: '0 */2 * * *'  
+   # - cron: '0 */2 * * *'  
   workflow_dispatch:  # 允许手动触发
 
 # 关键：控制并发执行
